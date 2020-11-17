@@ -5,12 +5,12 @@ author:
  - Dr Melissa Bedinger (m.bedinger@hw.ac.uk)
 date: "`r Sys.Date()`"
 output: 
-  html_document:
-    toc: true
-    toc_float: true
-    toc_depth: 3
-    theme: paper
-    highlight: haddock
+  rmarkdown::html_vignette
+    #toc: true
+    #toc_float: true
+    #toc_depth: 3
+    #theme: paper
+    #highlight: haddock
 vignette: >
   %\VignetteIndexEntry{Vignette 1 - Data}
   %\VignetteEngine{knitr::rmarkdown}
