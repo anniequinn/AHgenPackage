@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Dr Annie Visser-Quinn (a.visser-quinn@hw.ac.uk)" />
+<meta name="author" content="Dr Melissa Bedinger (m.bedinger@hw.ac.uk)" />
+
+<meta name="date" content="2020-11-17" />
+
+<title>Vignette 1 - Data</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Vignette 1 - Data</h1>
+<h4 class="author">Dr Annie Visser-Quinn (<a href="mailto:a.visser-quinn@hw.ac.uk" class="email">a.visser-quinn@hw.ac.uk</a>)</h4>
+<h4 class="author">Dr Melissa Bedinger (<a href="mailto:m.bedinger@hw.ac.uk" class="email">m.bedinger@hw.ac.uk</a>)</h4>
+<h4 class="date">2020-11-17</h4>
+
+
+
+<div class="section level2">
+<h2><img src="data:image/png;base64,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" alt="logo" style="position:absolute; top:0; right:0; padding:10px; max-width:20%"/></h2>
+<p>This first vignette is all about data in AHgen:</p>
+<ul>
+<li>Section 1 - Data types</li>
+<li>Section 2 - Read in data using the <code>read_*</code> functions</li>
+<li>Section 3 - Convert to different data types using the conversion family of functions</li>
+<li>Section 4 - Navigating the data using the <code>tidyverse</code> and <code>igraph</code> packages</li>
+</ul>
+<p>You can navigate, or jump to a specific section, using the buttons on the left.</p>
+</div>
+<div id="data-types" class="section level2">
+<h2>1. Data types</h2>
+<div id="adjacency-matrix" class="section level3">
+<h3>1.1 Adjacency matrix</h3>
+<p><span style="color: red;"><span class="citation">@Melissa</span></span></p>
+</div>
+<div id="edge-list" class="section level3">
+<h3>1.2 Edge list</h3>
+<p><span style="color: red;"><span class="citation">@Melissa</span></span></p>
+</div>
+<div id="igraph" class="section level3">
+<h3>1.3 igraph</h3>
+<p>An <strong>igraph</strong> is an object class from the package of the same name. The igraph data type is a <strong>special way of formatting complex networks</strong>, enabling the creation of large networks and speedy application of network analysis.</p>
+<p>The code output below is an <strong>igraph of an abstraction hierarchy</strong>.</p>
+<pre><code>## IGRAPH 3ebd4a3 UNW- 10 20 -- 
+## + attr: name (v/c), level (v/n), levelName (v/c), weight (e/n), layer
+## | (e/c)
+## + edges from 3ebd4a3 (vertex names):
+## [1] Provide efficient and accessible mobility--Increased road user safety   
+## [2] Provide efficient and accessible mobility--Road user satisfaction       
+## [3] Increased road user safety               --Safe efficient traffic flow  
+## [4] Increased road user safety               --Compliant user behaviour     
+## [5] Increased road user safety               --Effective occupant protection
+## [6] Road user satisfaction                   --Safe efficient traffic flow  
+## [7] Road user satisfaction                   --Compliant user behaviour     
+## + ... omitted several edges</code></pre>
+<p>The first line states that this is an igraph. It also provides a codename for the graph, <em>UNW-</em>:</p>
+<ul>
+<li><strong>U</strong> The graph is <strong>U</strong>ndirected</li>
+<li><strong>N</strong> The vertices have <strong>N</strong>ames</li>
+<li><strong>W</strong> The <strong>W</strong>eight attribute has been set</li>
+<li><strong>-</strong> The graph is not bipartite</li>
+</ul>
+<p>The second line provides the attributes of the <strong>vertices</strong> (denoted as <strong>v</strong>) and <strong>edges</strong> (denoted as <strong>e</strong>):</p>
+<ul>
+<li><strong>name (v/c)</strong> The vertices are named, and have the class <strong>c</strong>, character</li>
+<li><strong>level (v/n)</strong> The vertices have an attribute called <strong>level</strong>, with the class <strong>n</strong>, numeric</li>
+<li><strong>levelName (v/c)</strong> The vertices have an attribute called <strong>levelName</strong>, with the class <strong>c</strong>, character</li>
+<li><strong>weight (e/n)</strong> The edges have a weight, with the class <strong>n</strong>, numeric</li>
+<li><strong>layer (e/c)</strong> The edges have an attribute called <strong>layer</strong>, with the class <strong>c</strong>, character</li>
+</ul>
+<p>The remainder of the output represents the edges and the vertex names.</p>
+</div>
+</div>
+<div id="read-data" class="section level2">
+<h2>2. Read data</h2>
+<p>The read in functions in AHgen are prefixed with <em>read</em>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>(<span class="st">&quot;package:AHgenPackage&quot;</span>, <span class="at">pattern =</span> <span class="st">&quot;read&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;read_adjMat&quot;             &quot;read_indicatorsDatabase&quot;
+## [3] &quot;read_vInfo&quot;</code></pre>
+<p>Here we focus on the two functions, <code>read_adjMat()</code> and <code>read_vInfo()</code>, which read in the main inputs to AHgen:</p>
+<ul>
+<li><p>An <strong>adjacency</strong> matrix capturing the links between the levels of the abstraction hierarchy</p></li>
+<li><p><strong>Vertex information</strong>, the level and level name associated with each vertex</p></li>
+</ul>
+<p>These inputs should be:</p>
+<ul>
+<li><p>In the .xlsx format, i.e. an Excel spreadsheet.</p></li>
+<li><p>Placed in the <strong>inputs</strong> folder.</p></li>
+</ul>
+<div id="adjacency-matrix-1" class="section level3">
+<h3>2.1 Adjacency matrix</h3>
+<p>The adjacency matrix can be read in using the function <code>read_adjMat()</code>. This function has three input arguments:</p>
+<ul>
+<li><p><code>filename</code> The file path (relative to the AHgen folder)</p></li>
+<li><p><code>sheet</code> The sheet number of the adjacency matrix; this is set to <strong>1 by default</strong></p></li>
+<li><p><code>rescale</code> Whether the edge weightings in the adjacency matrix should be rescaled to 0.5; this is set to <strong>FALSE by default</strong></p></li>
+</ul>
+<p><em>Note, two of the three <code>read_adjMat()</code> input arguments have default values. If only the filename is provided, these arguments will take this default value.</em></p>
+<p>Click below to explore two example applications.</p>
+<details>
+<summary>
+<span style="color: #2196F3;"><strong>Show code - Example 1</strong></span>
+</summary>
+<p>The classic human factors example of cooking food in a microwave. The Excel file, <em>AH_microwave.xlsx</em> is provided in the <em>inputs</em> folder. An annotated exert of the adjacency matrix is shown below.</p>
+<p><span style="color: red;">Add image here.</span></p>
+<ol style="list-style-type: decimal">
+<li>The column of vertex names must be named <strong>vName</strong></li>
+<li>Vertex names run left to right</li>
+<li>And top to bottom</li>
+<li>The <strong>links</strong> between vertices are <strong>denoted by 1</strong>. <strong>Non-links</strong> are denoted by <strong>empty</strong> cells. <em>Note, zeroes can also be used to indicate non-links</em></li>
+<li>The diagonal cannot be linked, <strong>a vertex cannot link to itself</strong></li>
+<li>This workbook has two sheets, the adjacency matrix, sheet 1, and the vertex information, sheet 2</li>
+</ol>
+<p>Point 6 highlighted that there are two sheets, but we know from above that <code>read_adjMat()</code> reads in sheet 1 by default. Thus, these first two code chunks provide identical outputs.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;AH_microwave.xlsx&quot;</span>, <span class="at">package =</span> <span class="st">&quot;AHgenPackage&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>file</span></code></pre></div>
+<pre><code>## [1] &quot;C:/Users/av57/Documents/R/win-library/4.0/AHgenPackage/extdata/AH_microwave.xlsx&quot;</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_adjMat</span>(file)</span></code></pre></div>
+<pre><code>## # A tibble: 25 x 26
+##    vName `To cook food` `Time to heat f~ `Ease of cookin~ `Even dissipati~
+##    &lt;chr&gt;          &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+##  1 To c~              0                1                1                1
+##  2 Time~              1                0                0                0
+##  3 Ease~              1                0                0                0
+##  4 Even~              1                0                0                0
+##  5 Mini~              1                0                0                0
+##  6 Mini~              1                0                0                0
+##  7 Gene~              0                1                0                0
+##  8 Moni~              0                1                1                0
+##  9 Cont~              0                1                1                1
+## 10 Cont~              0                1                0                1
+## # ... with 15 more rows, and 21 more variables: `Minimise environmental
+## #   impact` &lt;dbl&gt;, `Minimise energy use` &lt;dbl&gt;, `Generate heat` &lt;dbl&gt;, `Monitor
+## #   condition of food` &lt;dbl&gt;, `Control heat transfer to food` &lt;dbl&gt;, `Control
+## #   dissipation of heat` &lt;dbl&gt;, `Generate radio waves` &lt;dbl&gt;, `Generate
+## #   light` &lt;dbl&gt;, `Set level of power` &lt;dbl&gt;, `Support food` &lt;dbl&gt;, `Stop heat
+## #   dissipating to surroundings` &lt;dbl&gt;, `Connect to electricity supply` &lt;dbl&gt;,
+## #   `Countdown time` &lt;dbl&gt;, Magnetron &lt;dbl&gt;, Controls &lt;dbl&gt;, Light &lt;dbl&gt;,
+## #   Plate &lt;dbl&gt;, Door &lt;dbl&gt;, Walls &lt;dbl&gt;, Plug &lt;dbl&gt;, Timer &lt;dbl&gt;</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_adjMat</span>(file, <span class="at">sheet =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 25 x 26
+##    vName `To cook food` `Time to heat f~ `Ease of cookin~ `Even dissipati~
+##    &lt;chr&gt;          &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+##  1 To c~              0                1                1                1
+##  2 Time~              1                0                0                0
+##  3 Ease~              1                0                0                0
+##  4 Even~              1                0                0                0
+##  5 Mini~              1                0                0                0
+##  6 Mini~              1                0                0                0
+##  7 Gene~              0                1                0                0
+##  8 Moni~              0                1                1                0
+##  9 Cont~              0                1                1                1
+## 10 Cont~              0                1                0                1
+## # ... with 15 more rows, and 21 more variables: `Minimise environmental
+## #   impact` &lt;dbl&gt;, `Minimise energy use` &lt;dbl&gt;, `Generate heat` &lt;dbl&gt;, `Monitor
+## #   condition of food` &lt;dbl&gt;, `Control heat transfer to food` &lt;dbl&gt;, `Control
+## #   dissipation of heat` &lt;dbl&gt;, `Generate radio waves` &lt;dbl&gt;, `Generate
+## #   light` &lt;dbl&gt;, `Set level of power` &lt;dbl&gt;, `Support food` &lt;dbl&gt;, `Stop heat
+## #   dissipating to surroundings` &lt;dbl&gt;, `Connect to electricity supply` &lt;dbl&gt;,
+## #   `Countdown time` &lt;dbl&gt;, Magnetron &lt;dbl&gt;, Controls &lt;dbl&gt;, Light &lt;dbl&gt;,
+## #   Plate &lt;dbl&gt;, Door &lt;dbl&gt;, Walls &lt;dbl&gt;, Plug &lt;dbl&gt;, Timer &lt;dbl&gt;</code></pre>
+<p>Notice that the empty cells from the Excel file are filled with zeroes by AHgen. This means these vertices are not linked, i.e. they have no weight. We might want to rescale the linked, or weighted edges, to 0.5. To do this, change the <code>rescale</code> argument to <code>TRUE</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_adjMat</span>(file, <span class="at">rescale =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 25 x 26
+##    vName `To cook food` `Time to heat f~ `Ease of cookin~ `Even dissipati~
+##    &lt;chr&gt;          &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+##  1 To c~            0                0.5              0.5              0.5
+##  2 Time~            0.5              0                0                0  
+##  3 Ease~            0.5              0                0                0  
+##  4 Even~            0.5              0                0                0  
+##  5 Mini~            0.5              0                0                0  
+##  6 Mini~            0.5              0                0                0  
+##  7 Gene~            0                0.5              0                0  
+##  8 Moni~            0                0.5              0.5              0  
+##  9 Cont~            0                0.5              0.5              0.5
+## 10 Cont~            0                0.5              0                0.5
+## # ... with 15 more rows, and 21 more variables: `Minimise environmental
+## #   impact` &lt;dbl&gt;, `Minimise energy use` &lt;dbl&gt;, `Generate heat` &lt;dbl&gt;, `Monitor
+## #   condition of food` &lt;dbl&gt;, `Control heat transfer to food` &lt;dbl&gt;, `Control
+## #   dissipation of heat` &lt;dbl&gt;, `Generate radio waves` &lt;dbl&gt;, `Generate
+## #   light` &lt;dbl&gt;, `Set level of power` &lt;dbl&gt;, `Support food` &lt;dbl&gt;, `Stop heat
+## #   dissipating to surroundings` &lt;dbl&gt;, `Connect to electricity supply` &lt;dbl&gt;,
+## #   `Countdown time` &lt;dbl&gt;, Magnetron &lt;dbl&gt;, Controls &lt;dbl&gt;, Light &lt;dbl&gt;,
+## #   Plate &lt;dbl&gt;, Door &lt;dbl&gt;, Walls &lt;dbl&gt;, Plug &lt;dbl&gt;, Timer &lt;dbl&gt;</code></pre>
+</details>
+<details>
+<summary>
+<span style="color: #2196F3;"><strong>Show code - Example 2</strong></span>
+</summary>
+<p>We now consider a second example abstraction hierarchy, <em>AH_mobility.xlsx</em>, which is also available in the <em>inputs</em> folder.</p>
+<p><span style="color: red;">Add image here.</span></p>
+<ol style="list-style-type: decimal">
+<li>As before, the column of vertex names is called <strong>vName</strong></li>
+<li>And the vertex names run left to right</li>
+<li>And top to bottom</li>
+<li>The <strong>links</strong> between vertices are again <strong>denoted by 1</strong>. This time, <strong>non-links</strong> are denoted by <strong>0</strong> cells</li>
+<li>These is only one sheet in this workbook</li>
+<li>But there are two extra columns of vertex information, <strong>level</strong> and <strong>levelName</strong>. If these columns had different names they would be read in as vertices!</li>
+</ol>
+<p>With only one sheet, the first sheet is the adjacency matrix, and if we don’t want to rescale the data, then only one input argument is required <code>&quot;inputs/AH_mobility.xlsx&quot;</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">#### read_adjMat(&quot;inputs/AH_mobility.xlsx&quot;)</span></span></code></pre></div>
+<p>The code chunk below shows what happens if there is a mismatch in column names. Check out the file <em>AH_mobility_error.xlsx</em> to see if you can spot the problem.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">#### read_adjMat(&quot;inputs/AH_mobility_error.xlsx&quot;)</span></span></code></pre></div>
+</details>
+</div>
+<div id="vertex-information" class="section level3">
+<h3>2.2 Vertex information</h3>
+<p>The vertex information can be read in using the function <code>read_vInfo()</code>. This function has two input arguments:</p>
+<ul>
+<li><p><code>filename</code> The file path (relative to the AHgen folder)</p></li>
+<li><p><code>sheet</code> The sheet number of the vertex information. This is set to <strong>1 by default</strong></p></li>
+</ul>
+<details>
+<summary>
+<span style="color: #2196F3;"><strong>Show code - Example 3</strong></span>
+</summary>
+<p>For the microwave AH, the vertex information is in the second sheet. Each row describes a single vertex in terms of level, level name and vertex name. To avoid errors, these columns must be named <strong>level</strong>, <strong>levelName</strong> and <strong>vName</strong>.</p>
+<p><span style="color: red;">Add image here.</span></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_vInfo</span>(file, <span class="at">sheet =</span> <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 25 x 3
+##    level levelName                    vName                        
+##    &lt;dbl&gt; &lt;chr&gt;                        &lt;chr&gt;                        
+##  1     1 Functional purposes          To cook food                 
+##  2     2 Values and priority measures Time to heat food            
+##  3     2 Values and priority measures Ease of cooking              
+##  4     2 Values and priority measures Even dissipation of heat     
+##  5     2 Values and priority measures Minimise environmental impact
+##  6     2 Values and priority measures Minimise energy use          
+##  7     3 Generalised functions        Generate heat                
+##  8     3 Generalised functions        Monitor condition of food    
+##  9     3 Generalised functions        Control heat transfer to food
+## 10     3 Generalised functions        Control dissipation of heat  
+## # ... with 15 more rows</code></pre>
+</details>
+<details>
+<summary>
+<span style="color: #2196F3;"><strong>Show code - Example 4</strong></span>
+</summary>
+<p>We saw in <strong>Example 2</strong> that the vertex information was embedded in the adjacency matrix. This can be extracted using the <code>tidyverse</code> <code>select</code> function.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">#### read_adjMat(&quot;inputs/AH_mobility.xlsx&quot;) %&gt;% select(level, levelName, vName)</span></span></code></pre></div>
+</details>
+<p><br></p>
+</div>
+</div>
+<div id="conversions" class="section level2">
+<h2>3. Conversions</h2>
+<p>In AHgen, the abstraction hierarchy can be captured in three different formats:</p>
+<ul>
+<li>Adjacency matrix</li>
+<li>Edge list</li>
+<li>igraph</li>
+</ul>
+<p>To change format, AHgen has a family of six conversion functions:</p>
+<ul>
+<li><code>adjMat_to_edgelist()</code> and <code>adjMat_to_igraph()</code>, where the input arguments are the adjacency matrix</li>
+<li><code>edgelist_to_igraph()</code> and <code>edgelist_to_adjMat()</code>, where the input arguments are the abstraction hierarchy in edge list format, and the vertex information</li>
+<li><code>igraph_to_adjMat()</code> and <code>igraph_to_edgelist()</code>, where the input arguments are the abstraction hierarchy in the igraph format</li>
+</ul>
+<p>Before introducing the examples, we need to save the adjacency matrix and vertex information as objects in the environment. We do this using the <code>&lt;-</code> operator.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;AH_mobility.xlsx&quot;</span>, <span class="at">package =</span> <span class="st">&quot;AHgenPackage&quot;</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>file</span></code></pre></div>
+<pre><code>## [1] &quot;C:/Users/av57/Documents/R/win-library/4.0/AHgenPackage/extdata/AH_mobility.xlsx&quot;</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dh <span class="ot">&lt;-</span> <span class="fu">read_adjMat</span>(file) </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>dv <span class="ot">&lt;-</span> dh <span class="sc">%&gt;%</span> <span class="fu">select</span>(level, levelName, vName)</span></code></pre></div>
+<details>
+<summary>
+<span style="color: #2196F3;"><strong>Show code - Example 5 - From adjacency matrix</strong></span>
+</summary>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>de <span class="ot">&lt;-</span> dh <span class="sc">%&gt;%</span> <span class="fu">adjMat_to_edgelist</span>(<span class="at">vInfo =</span> dv); de</span></code></pre></div>
+<pre><code>## # A tibble: 20 x 4
+##    layer    from                           to                             weight
+##    &lt;chr&gt;    &lt;chr&gt;                          &lt;chr&gt;                           &lt;dbl&gt;
+##  1 l1FP_l2~ Provide efficient and accessi~ Increased road user safety          1
+##  2 l1FP_l2~ Provide efficient and accessi~ Road user satisfaction              1
+##  3 l2VPM_l~ Increased road user safety     Compliant user behaviour            1
+##  4 l2VPM_l~ Increased road user safety     Effective occupant protection       1
+##  5 l2VPM_l~ Increased road user safety     Safe efficient traffic flow         1
+##  6 l2VPM_l~ Road user satisfaction         Compliant user behaviour            1
+##  7 l2VPM_l~ Road user satisfaction         Effective occupant protection       1
+##  8 l2VPM_l~ Road user satisfaction         Safe efficient traffic flow         1
+##  9 l3GF_l4~ Compliant user behaviour       Driver capabilities and limit~      1
+## 10 l3GF_l4~ Compliant user behaviour       Road Transportation System ca~      1
+## 11 l3GF_l4~ Compliant user behaviour       Vehicle capacity                    1
+## 12 l3GF_l4~ Effective occupant protection  Driver capabilities and limit~      1
+## 13 l3GF_l4~ Effective occupant protection  Road Transportation System ca~      1
+## 14 l3GF_l4~ Effective occupant protection  Vehicle capacity                    1
+## 15 l3GF_l4~ Safe efficient traffic flow    Driver capabilities and limit~      1
+## 16 l3GF_l4~ Safe efficient traffic flow    Road Transportation System ca~      1
+## 17 l3GF_l4~ Safe efficient traffic flow    Vehicle capacity                    1
+## 18 l4ORP_l~ Driver capabilities and limit~ Vehicle components                  1
+## 19 l4ORP_l~ Road Transportation System ca~ Vehicle components                  1
+## 20 l4ORP_l~ Vehicle capacity               Vehicle components                  1</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>di <span class="ot">&lt;-</span> dh <span class="sc">%&gt;%</span> <span class="fu">adjMat_to_igraph</span>(<span class="at">vInfo =</span> dv); di</span></code></pre></div>
+<pre><code>## IGRAPH 3f496a9 UNW- 10 20 -- 
+## + attr: name (v/c), level (v/n), levelName (v/c), weight (e/n), layer
+## | (e/c)
+## + edges from 3f496a9 (vertex names):
+## [1] Provide efficient and accessible mobility--Increased road user safety   
+## [2] Provide efficient and accessible mobility--Road user satisfaction       
+## [3] Increased road user safety               --Safe efficient traffic flow  
+## [4] Increased road user safety               --Compliant user behaviour     
+## [5] Increased road user safety               --Effective occupant protection
+## [6] Road user satisfaction                   --Safe efficient traffic flow  
+## [7] Road user satisfaction                   --Compliant user behaviour     
+## + ... omitted several edges</code></pre>
+</details>
+<details>
+<summary>
+<span style="color: #2196F3;"><strong>Show code - Example 6 - From edge list</strong></span>
+</summary>
+<p>Note that, when converting from an edge list, we need to specify the vertex information.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>de <span class="sc">%&gt;%</span> <span class="fu">edgelist_to_igraph</span>(<span class="at">vInfo =</span> dv)</span></code></pre></div>
+<pre><code>## IGRAPH 3f52652 UNW- 10 20 -- 
+## + attr: name (v/c), level (v/n), levelName (v/c), weight (e/n), layer
+## | (e/c)
+## + edges from 3f52652 (vertex names):
+## [1] Provide efficient and accessible mobility--Increased road user safety   
+## [2] Provide efficient and accessible mobility--Road user satisfaction       
+## [3] Increased road user safety               --Compliant user behaviour     
+## [4] Increased road user safety               --Effective occupant protection
+## [5] Increased road user safety               --Safe efficient traffic flow  
+## [6] Road user satisfaction                   --Compliant user behaviour     
+## [7] Road user satisfaction                   --Effective occupant protection
+## + ... omitted several edges</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>de <span class="sc">%&gt;%</span> <span class="fu">edgelist_to_adjMat</span>(<span class="at">vInfo =</span> dv)</span></code></pre></div>
+<pre><code>## # A tibble: 10 x 13
+##    level levelName vName `Provide effici~ `Increased road~ `Road user sati~
+##    &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+##  1     1 Function~ Prov~                0                1                1
+##  2     2 Values a~ Incr~                1                0                0
+##  3     2 Values a~ Road~                1                0                0
+##  4     3 Generali~ Comp~                0                1                1
+##  5     3 Generali~ Effe~                0                1                1
+##  6     3 Generali~ Safe~                0                1                1
+##  7     4 Object-r~ Driv~                0                0                0
+##  8     4 Object-r~ Road~                0                0                0
+##  9     4 Object-r~ Vehi~                0                0                0
+## 10     5 Physical~ Vehi~                0                0                0
+## # ... with 7 more variables: `Compliant user behaviour` &lt;dbl&gt;, `Effective
+## #   occupant protection` &lt;dbl&gt;, `Safe efficient traffic flow` &lt;dbl&gt;, `Driver
+## #   capabilities and limitations` &lt;dbl&gt;, `Road Transportation System
+## #   capabilities and limitations` &lt;dbl&gt;, `Vehicle capacity` &lt;dbl&gt;, `Vehicle
+## #   components` &lt;dbl&gt;</code></pre>
+</details>
+<details>
+<summary>
+<span style="color: #2196F3;"><strong>Show code - Example 7 - From igraph</strong></span>
+</summary>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>di <span class="sc">%&gt;%</span> igraph_to_adjMat</span></code></pre></div>
+<pre><code>## # A tibble: 10 x 13
+##    level levelName vName `Provide effici~ `Increased road~ `Road user sati~
+##    &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+##  1     1 Function~ Prov~                0                1                1
+##  2     2 Values a~ Incr~                1                0                0
+##  3     2 Values a~ Road~                1                0                0
+##  4     3 Generali~ Safe~                0                1                1
+##  5     3 Generali~ Comp~                0                1                1
+##  6     3 Generali~ Effe~                0                1                1
+##  7     4 Object-r~ Road~                0                0                0
+##  8     4 Object-r~ Driv~                0                0                0
+##  9     4 Object-r~ Vehi~                0                0                0
+## 10     5 Physical~ Vehi~                0                0                0
+## # ... with 7 more variables: `Safe efficient traffic flow` &lt;dbl&gt;, `Compliant
+## #   user behaviour` &lt;dbl&gt;, `Effective occupant protection` &lt;dbl&gt;, `Road
+## #   Transportation System capabilities and limitations` &lt;dbl&gt;, `Driver
+## #   capabilities and limitations` &lt;dbl&gt;, `Vehicle capacity` &lt;dbl&gt;, `Vehicle
+## #   components` &lt;dbl&gt;</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>di <span class="sc">%&gt;%</span> igraph_to_edgelist</span></code></pre></div>
+<pre><code>## # A tibble: 20 x 4
+##    layer    from                           to                             weight
+##    &lt;chr&gt;    &lt;chr&gt;                          &lt;chr&gt;                           &lt;dbl&gt;
+##  1 l1FP_l2~ Provide efficient and accessi~ Increased road user safety          1
+##  2 l1FP_l2~ Provide efficient and accessi~ Road user satisfaction              1
+##  3 l2VPM_l~ Increased road user safety     Safe efficient traffic flow         1
+##  4 l2VPM_l~ Increased road user safety     Compliant user behaviour            1
+##  5 l2VPM_l~ Increased road user safety     Effective occupant protection       1
+##  6 l2VPM_l~ Road user satisfaction         Safe efficient traffic flow         1
+##  7 l2VPM_l~ Road user satisfaction         Compliant user behaviour            1
+##  8 l2VPM_l~ Road user satisfaction         Effective occupant protection       1
+##  9 l3GF_l4~ Safe efficient traffic flow    Road Transportation System ca~      1
+## 10 l3GF_l4~ Safe efficient traffic flow    Driver capabilities and limit~      1
+## 11 l3GF_l4~ Safe efficient traffic flow    Vehicle capacity                    1
+## 12 l3GF_l4~ Compliant user behaviour       Road Transportation System ca~      1
+## 13 l3GF_l4~ Compliant user behaviour       Driver capabilities and limit~      1
+## 14 l3GF_l4~ Compliant user behaviour       Vehicle capacity                    1
+## 15 l3GF_l4~ Effective occupant protection  Road Transportation System ca~      1
+## 16 l3GF_l4~ Effective occupant protection  Driver capabilities and limit~      1
+## 17 l3GF_l4~ Effective occupant protection  Vehicle capacity                    1
+## 18 l4ORP_l~ Road Transportation System ca~ Vehicle components                  1
+## 19 l4ORP_l~ Driver capabilities and limit~ Vehicle components                  1
+## 20 l4ORP_l~ Vehicle capacity               Vehicle components                  1</code></pre>
+<p><br></p>
+<p><span style="color: red;">Paused here</span></p>
+</div>
+<div id="navigating-the-data" class="section level2">
+<h2>4. Navigating the data</h2>
+<p>Now let’s consider how to navigate and explore these three data types.</p>
+<ul>
+<li>The <strong>adjacency matrix</strong> and <strong>edge list</strong> are in a <strong>tibble</strong> format, an easy to read tabular form. They can be navigated like any data.frame or tibble in R using functions such as <code>select()</code> and <code>filter()</code></li>
+<li>The <strong>igraph</strong> is a special way of formatting complex networks. The package of the same name introduces a number of functions to interrogate the network</li>
+</ul>
+<p>Click below for examples for each data type.</p>
+<details>
+<summary>
+<span style="color: #2196F3;"><strong>Show code - Example 8 - Adjacency matrix</strong></span>
+</summary>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select vertices by name</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>dh <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="st">`</span><span class="at">Provide efficient and accessible mobility</span><span class="st">`</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 10 x 1
+##    `Provide efficient and accessible mobility`
+##                                          &lt;dbl&gt;
+##  1                                           0
+##  2                                           1
+##  3                                           1
+##  4                                           0
+##  5                                           0
+##  6                                           0
+##  7                                           0
+##  8                                           0
+##  9                                           0
+## 10                                           0</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select vertices which match a pattern</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>dh <span class="sc">%&gt;%</span> <span class="fu">select</span>(vName, <span class="fu">contains</span>(<span class="st">&quot;safe&quot;</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 10 x 3
+##    vName                           `Increased road user ~ `Safe efficient traff~
+##    &lt;chr&gt;                                            &lt;dbl&gt;                  &lt;dbl&gt;
+##  1 Provide efficient and accessib~                      1                      0
+##  2 Increased road user safety                           0                      1
+##  3 Road user satisfaction                               0                      1
+##  4 Safe efficient traffic flow                          1                      0
+##  5 Compliant user behaviour                             1                      0
+##  6 Effective occupant protection                        1                      0
+##  7 Road Transportation System cap~                      0                      1
+##  8 Driver capabilities and limita~                      0                      1
+##  9 Vehicle capacity                                     0                      1
+## 10 Vehicle components                                   0                      0</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to a specific vertex</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>dh <span class="sc">%&gt;%</span> <span class="fu">filter</span>(vName <span class="sc">==</span> <span class="st">&quot;Compliant user behaviour&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 13
+##   level levelName vName `Provide effici~ `Increased road~ `Road user sati~
+##   &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1     3 Generali~ Comp~                0                1                1
+## # ... with 7 more variables: `Safe efficient traffic flow` &lt;dbl&gt;, `Compliant
+## #   user behaviour` &lt;dbl&gt;, `Effective occupant protection` &lt;dbl&gt;, `Road
+## #   Transportation System capabilities and limitations` &lt;dbl&gt;, `Driver
+## #   capabilities and limitations` &lt;dbl&gt;, `Vehicle capacity` &lt;dbl&gt;, `Vehicle
+## #   components` &lt;dbl&gt;</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter to vertices matching a pattern</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>dh <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(vName, <span class="st">&quot;capab|Capab&quot;</span>))</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 13
+##   level levelName vName `Provide effici~ `Increased road~ `Road user sati~
+##   &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1     4 Object-r~ Road~                0                0                0
+## 2     4 Object-r~ Driv~                0                0                0
+## # ... with 7 more variables: `Safe efficient traffic flow` &lt;dbl&gt;, `Compliant
+## #   user behaviour` &lt;dbl&gt;, `Effective occupant protection` &lt;dbl&gt;, `Road
+## #   Transportation System capabilities and limitations` &lt;dbl&gt;, `Driver
+## #   capabilities and limitations` &lt;dbl&gt;, `Vehicle capacity` &lt;dbl&gt;, `Vehicle
+## #   components` &lt;dbl&gt;</code></pre>
+</details>
+<details>
+<summary>
+<span style="color: #2196F3;"><strong>Show code - Example 9 - Edge list</strong></span>
+</summary>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for edges in a specific layer</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>de <span class="sc">%&gt;%</span> <span class="fu">filter</span>(layer <span class="sc">==</span> <span class="st">&quot;l1FP_l2VPM&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 4
+##   layer      from                                 to                      weight
+##   &lt;chr&gt;      &lt;chr&gt;                                &lt;chr&gt;                    &lt;dbl&gt;
+## 1 l1FP_l2VPM Provide efficient and accessible mo~ Increased road user sa~      1
+## 2 l1FP_l2VPM Provide efficient and accessible mo~ Road user satisfaction       1</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for edges linking vertices containing road</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>de <span class="sc">%&gt;%</span> <span class="fu">filter_all</span>(<span class="fu">any_vars</span>(<span class="fu">str_detect</span>(<span class="fu">str_to_lower</span>(.), <span class="st">&quot;road&quot;</span>)))</span></code></pre></div>
+<pre><code>## # A tibble: 12 x 4
+##    layer    from                           to                             weight
+##    &lt;chr&gt;    &lt;chr&gt;                          &lt;chr&gt;                           &lt;dbl&gt;
+##  1 l1FP_l2~ Provide efficient and accessi~ Increased road user safety          1
+##  2 l1FP_l2~ Provide efficient and accessi~ Road user satisfaction              1
+##  3 l2VPM_l~ Increased road user safety     Compliant user behaviour            1
+##  4 l2VPM_l~ Increased road user safety     Effective occupant protection       1
+##  5 l2VPM_l~ Increased road user safety     Safe efficient traffic flow         1
+##  6 l2VPM_l~ Road user satisfaction         Compliant user behaviour            1
+##  7 l2VPM_l~ Road user satisfaction         Effective occupant protection       1
+##  8 l2VPM_l~ Road user satisfaction         Safe efficient traffic flow         1
+##  9 l3GF_l4~ Compliant user behaviour       Road Transportation System ca~      1
+## 10 l3GF_l4~ Effective occupant protection  Road Transportation System ca~      1
+## 11 l3GF_l4~ Safe efficient traffic flow    Road Transportation System ca~      1
+## 12 l4ORP_l~ Road Transportation System ca~ Vehicle components                  1</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for edges linking from the vertex &quot;Vehicle capacity&quot;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>de <span class="sc">%&gt;%</span> <span class="fu">filter</span>(from <span class="sc">==</span> <span class="st">&quot;Vehicle capacity&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 4
+##   layer      from             to                 weight
+##   &lt;chr&gt;      &lt;chr&gt;            &lt;chr&gt;               &lt;dbl&gt;
+## 1 l4ORP_l5PO Vehicle capacity Vehicle components      1</code></pre>
+</details>
+<details>
+<summary>
+<span style="color: #2196F3;"><strong>Show code - Example 10 - igraph</strong></span>
+</summary>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract vertices</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(di)</span></code></pre></div>
+<pre><code>## + 10/10 vertices, named, from 3f496a9:
+##  [1] Provide efficient and accessible mobility              
+##  [2] Increased road user safety                             
+##  [3] Road user satisfaction                                 
+##  [4] Safe efficient traffic flow                            
+##  [5] Compliant user behaviour                               
+##  [6] Effective occupant protection                          
+##  [7] Road Transportation System capabilities and limitations
+##  [8] Driver capabilities and limitations                    
+##  [9] Vehicle capacity                                       
+## [10] Vehicle components</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract edges</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">E</span>(di)</span></code></pre></div>
+<pre><code>## + 20/20 edges from 3f496a9 (vertex names):
+## [1] Provide efficient and accessible mobility--Increased road user safety   
+## [2] Provide efficient and accessible mobility--Road user satisfaction       
+## [3] Increased road user safety               --Safe efficient traffic flow  
+## [4] Increased road user safety               --Compliant user behaviour     
+## [5] Increased road user safety               --Effective occupant protection
+## [6] Road user satisfaction                   --Safe efficient traffic flow  
+## [7] Road user satisfaction                   --Compliant user behaviour     
+## [8] Road user satisfaction                   --Effective occupant protection
+## + ... omitted several edges</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract vertex attribute name</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(di)<span class="sc">$</span>name</span></code></pre></div>
+<pre><code>##  [1] &quot;Provide efficient and accessible mobility&quot;              
+##  [2] &quot;Increased road user safety&quot;                             
+##  [3] &quot;Road user satisfaction&quot;                                 
+##  [4] &quot;Safe efficient traffic flow&quot;                            
+##  [5] &quot;Compliant user behaviour&quot;                               
+##  [6] &quot;Effective occupant protection&quot;                          
+##  [7] &quot;Road Transportation System capabilities and limitations&quot;
+##  [8] &quot;Driver capabilities and limitations&quot;                    
+##  [9] &quot;Vehicle capacity&quot;                                       
+## [10] &quot;Vehicle components&quot;</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract vertex attribute level</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(di)<span class="sc">$</span>level</span></code></pre></div>
+<pre><code>##  [1] 1 2 2 3 3 3 4 4 4 5</code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract vertex attribute levelName</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(di)<span class="sc">$</span>levelName</span></code></pre></div>
+<pre><code>##  [1] &quot;Functional purposes&quot;          &quot;Values and priority measures&quot;
+##  [3] &quot;Values and priority measures&quot; &quot;Generalised functions&quot;       
+##  [5] &quot;Generalised functions&quot;        &quot;Generalised functions&quot;       
+##  [7] &quot;Object-related processes&quot;     &quot;Object-related processes&quot;    
+##  [9] &quot;Object-related processes&quot;     &quot;Physical objects&quot;</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract edge attribute weight</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">E</span>(di)<span class="sc">$</span>weight</span></code></pre></div>
+<pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract edge attribute layer</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">E</span>(di)<span class="sc">$</span>layer</span></code></pre></div>
+<pre><code>##  [1] &quot;l1FP_l2VPM&quot; &quot;l1FP_l2VPM&quot; &quot;l2VPM_l3GF&quot; &quot;l2VPM_l3GF&quot; &quot;l2VPM_l3GF&quot;
+##  [6] &quot;l2VPM_l3GF&quot; &quot;l2VPM_l3GF&quot; &quot;l2VPM_l3GF&quot; &quot;l3GF_l4ORP&quot; &quot;l3GF_l4ORP&quot;
+## [11] &quot;l3GF_l4ORP&quot; &quot;l3GF_l4ORP&quot; &quot;l3GF_l4ORP&quot; &quot;l3GF_l4ORP&quot; &quot;l3GF_l4ORP&quot;
+## [16] &quot;l3GF_l4ORP&quot; &quot;l3GF_l4ORP&quot; &quot;l4ORP_l5PO&quot; &quot;l4ORP_l5PO&quot; &quot;l4ORP_l5PO&quot;</code></pre>
+</details>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
