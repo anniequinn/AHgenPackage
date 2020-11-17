@@ -59,3 +59,29 @@ calcMetrics <- function(igraph, vInfo, metrics) {
   return(output)
 
 }
+
+calcChange <- function(before, after, metric) {
+
+  before <-
+    before %>%
+    select(level, levelName, vName, matches(metric)) %>%
+    setNames(c("level", "levelName", "vName", "before"))
+
+  after <-
+    after %>%
+    select(level, levelName, vName, matches(metric)) %>%
+    setNames(c("level", "levelName", "vName", "after"))
+
+  output <-
+    list(before, after) %>%
+    reduce(full_join, by = c("level", "levelName", "vName")) %>%
+    mutate(absChange_afterMinusBefore = after-before,
+           pctChange = absChange_afterMinusBefore/before * 100)
+
+  output <-
+    output %>%
+    mutate(pctChange = ifelse(before == 0 & after == 0, 0, pctChange))
+
+  return(output)
+
+}
