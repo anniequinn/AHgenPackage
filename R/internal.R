@@ -58,7 +58,7 @@
   layoutSug <-
     lapply(1:length(layoutSug), function(i) {
 
-      I = i-1
+      I = i#-1
 
       layoutSug[[i]] %>%
         mutate(x = scales::rescale(x, to = c(-I, I)),
