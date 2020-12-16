@@ -48,7 +48,7 @@ vNetwork <- function(vName, vInfo, edgelist, direction = c("both", "up", "down")
 
     vertices[[myLevel]] <- myVertex
 
-    levels <- seq(myLevel, min(edgelist$toLevel), -1)
+    if(myLevel == min(edgelist$toLevel)) { levels <- myLevel } else { levels <- seq(myLevel, min(edgelist$toLevel), -1) }
 
     for(i in levels) {
 
