@@ -23,7 +23,7 @@ visLayout <- function(edgelist, vInfo, key, spacing) {
 
 
   # DUMMY VERTEX ------------------------------------------------------------
-  VINFO <- vInfo %>% filter(level == 1)
+  VINFO <- vInfo %>% filter(level == min(level))
 
   EDGELIST <- edgelist %>% add_row(.before = 1, layer = "dummyLayer", from = "dummyVertex", to = VINFO$vName)
 

@@ -48,7 +48,7 @@ vNetwork <- function(vName, vInfo, edgelist, direction = c("both", "up", "down")
 
     vertices[[myLevel]] <- myVertex
 
-    if(myLevel == min(edgelist$toLevel)) { levels <- myLevel } else { levels <- seq(myLevel, min(edgelist$toLevel), -1) }
+    levels <- seq(myLevel, min(edgelist$toLevel), -1)
 
     for(i in levels) {
 
@@ -70,7 +70,10 @@ vNetwork <- function(vName, vInfo, edgelist, direction = c("both", "up", "down")
   edges <- list()
   vertices <- list()
 
-  if(direction == "both" | direction == "up") {
+  myVertex <- vName
+  myLevel <- vInfo %>% filter(vName %in% myVertex) %>% pull(level)
+
+  if((direction == "both" | direction == "up") & myLevel != 1) {
 
     tmp <- networkUp(vName, vInfo, edgelist)
     edges[["up"]] <- tmp$edges
@@ -78,7 +81,7 @@ vNetwork <- function(vName, vInfo, edgelist, direction = c("both", "up", "down")
 
   }
 
-  if(direction == "both" | direction == "down") {
+  if((direction == "both" | direction == "down") & myLevel != 5) {
 
     tmp <- networkDown(vName, vInfo, edgelist)
     edges[["down"]] <- tmp$edges
